@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+module Helper
+  def self.present?(value)
+    value != nil && value != ""
+  end
+end
+
+module InputParser
+  require_relative 'primee'
+  require 'optparse'
+
+  options = {}
+
+  opt_parser = OptionParser.new do |opts|
+    opts.banner = "Usage examples: primee [OPTIONS]"
+    opts.separator ""
+    opts.separator "\tFirst N primes' multiplications"
+    opts.separator "\t\tprimee -n N"
+    opts.separator ""
+    opts.separator "\t\t OR"
+    opts.separator ""
+    opts.separator "\tNth prime multiplications"
+    opts.separator "\t\tprimee -p N"
+    opts.separator ""
+    opts.separator "\t\t OR"
+    opts.separator ""
+    opts.separator "\tCheck if N is a prime"
+    opts.separator "\t\tprimee -c N"
+    opts.separator ""
+    opts.separator "OPTIONS:"
+
+    opts.on("-n", "--n-limit NUMBER", Integer, "First N primes's multiplications") do |opt|
+      options[:n] = opt
+    end
+
+    opts.on("-p", "--prime NUMBER", Integer, "Gets Nth prime' multiplications") do |opt|
+      options[:p] = opt
+    end
+
+    opts.on("-c", "--check NUMBER", Integer, "Checks if N is a prime") do |opt|
+      options[:c] = opt
+    end
+  end
+
+  begin
+    opt_parser.parse!
+    argument = if Helper.present?(options[:n])
+                  option = :n
+                  options[:n]
+                elsif Helper.present?(options[:p])
+                  option = :p
+                  options[:p]
+                elsif Helper.present?(options[:c])
+                  option = :c
+                  options[:c]
+                end
+
+    if argument && argument < 1
+      puts "Seriously? Give me a number which is greater than 0"
+      exit
+    end
+  rescue OptionParser::MissingArgument
+    puts "Missing argument!"
+    exit
+  rescue OptionParser::InvalidOption
+    puts "Invalid option!"
+    exit
+  rescue OptionParser::InvalidArgument
+    puts "Invalid argument!"
+    exit
+  end
+
+  Primeenator::Operations.start(option, argument)
+end
