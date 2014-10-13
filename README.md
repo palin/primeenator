@@ -2,9 +2,13 @@ primeenator
 ===========
 
 `./primee -h #Help - list of parameters`
+
 `./primee -n N #Finding N first primes and printing their multiplications in a table.`
+
 `./primee -p N #Gets Nth prime multiplication`
+
 `./primee -c N #Check if N is a prime number.`
+
 `ruby primee_spec.rb #to start tests with minitest`
 
 1. User input
